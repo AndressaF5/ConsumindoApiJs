@@ -1,7 +1,7 @@
 const key = "$2a$10$DY/YV2q35MKB2/tAz2lr/uRL8zRCFkCfjpAzTy.ywnGfmZ249DmuW";
 
 function criarHtml(){
-  var div = document.querySelector("divPesquisa");
+  var div = document.querySelector("#divPesquisa");
   
   var label = document.createElement("label");
   label.textContent = "Digite um nome: ";
