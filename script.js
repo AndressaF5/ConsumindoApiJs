@@ -1,15 +1,42 @@
 const key = "$2a$10$DY/YV2q35MKB2/tAz2lr/uRL8zRCFkCfjpAzTy.ywnGfmZ249DmuW";
 
+function criarHtml(){
+  var div = document.querySelector("divPesquisa");
+  
+  var label = document.createElement("label");
+  label.textContent = "Digite um nome: ";
+
+  var input = document.createElement("input");
+  input.type = "text";
+  input.id = "campoNome";
+
+  var button = document.createElement("button");
+  button.innerText = "Buscar";
+  button.addEventListener("click", function() { buscarNome() });
+
+  var p = document.createElement("p");
+  p.id = "resultado";
+
+  var img = document.createElement("img");
+  img.id = "imagemPersonagem";
+
+  div.appendChild(label);
+  div.appendChild(input);
+  div.appendChild(button);
+  div.appendChild(p);
+  div.appendChild(img);
+}
+
 async function buscaApiHarryPotter(){
   let url = "https://www.potterapi.com/v1/characters" + "?key=" + key;
 
   let response = await fetch(url);
   let data = await response.json();
 
-  console.log(data[50]);
+  console.log(data);
 }
 
-async function buscarNomeOuApelido(){
+async function buscarNome(){
   
   var campoNome = document.getElementById("campoNome").value;
 
@@ -61,3 +88,5 @@ async function pesquisarImagem(nome){
 
   console.log(data);
 }*/
+
+criarHtml();
