@@ -110,26 +110,32 @@ async function pesquisarHouse(house){
   let response = await fetch(url);
   let data = await response.json();
 
-  var ol = document.createElement("ol");
-  ol.id = "ol";
+  var ul = document.createElement("ul");
+  ul.id = "ul";
+  var li = document.createElement("li");
 
-  divDetalhes.appendChild(ol);
+  ul.style.textDecoration = "none";
+
+  divDetalhes.appendChild(ul);
 
   for(let item in data){
     //console.log(data[item].members);
     for(let i = 0; i <= (data[item].members.length); i++){
       //console.log(data[item].members[i]);
       var dadosPersonagem = await buscarPersonagemPorId(data[item].members[i]);
-      var li = document.createElement("li");
-      pNomePersonagem.textContent = "Personagem: " + dadosPersonagem.name;
-      pRole.textContent = "Função: " + dadosPersonagem.role;
-      pSchool.textContent = "Escola: " + dadosPersonagem.school;
-      // Corrigir erro do li
-      li.appendChild(pNomePersonagem);
-      li.appendChild(pRole);
-      li.appendChild(pSchool);
-      ol.appendChild(li);
+      var p1 = document.createElement("p");
+      p1.textContent = "Personagem: " + dadosPersonagem.name;
 
+      var p2 = document.createElement("p");
+      p2.textContent = "Função: " + dadosPersonagem.role;
+
+      var p3 = document.createElement("p");
+      p3.textContent = "Escola: " + dadosPersonagem.house;
+      // Corrigir erro do li
+      li.appendChild(p1);
+      li.appendChild(p2);
+      li.appendChild(p3);
+      ul.appendChild(li);
     }
   }
 }
@@ -139,12 +145,19 @@ async function buscarPersonagemPorId(id){
   let response = await fetch(url);
   let data = await response.json();
 
-  return {
-    name : data.name,
-    role : data.role,
-    school : data.school,
-  };
-
+  if(data != null){
+    return {
+      name : data.name,
+      role : data.role,
+      house : data.house
+    };
+  }else{
+    return {
+      name : "Undefined",
+      role : "Undefined",
+      house : "Undefined"
+    };
+  }
 }
 
 async function buscarPersonagem(valorPesquisa){
@@ -161,12 +174,13 @@ async function buscarPersonagem(valorPesquisa){
   
   for(let i = 0; i < data.length; i++){
     if(((data[i].name).includes(campoCapitalize))){
+      
       var dados = {
         personagem : data[i].name,
         role : data[i].role,
         school : data[i].school
-      }
 
+      }
       var outrosDados = await pesquisarOutrosDados(data[i].name);
 
       dadosPersonagem(dados, outrosDados);
@@ -175,13 +189,42 @@ async function buscarPersonagem(valorPesquisa){
 }
 
 function dadosPersonagem(objDados, objOutrosDados){
-  pNomePersonagem.textContent = "Personagem: " + objDados.personagem;
-  pRole.textContent = "Função: " + objDados.role;
-  pSchool.textContent = "Escola: " + objDados.school;
-  // adicionar o bloodStatus e orderOfThePhoenix
-  pDateOfBirth.textContent = "Data de Nascimento: " + objOutrosDados.dateOfBirth;
-  pActor.textContent = "Ator/Atriz: " + objOutrosDados.actor;
-  imgPersonagem.src = objOutrosDados.img;
+  let li = document.createElement("li");
+  li.id = "li";
+  
+  let p1 = document.createElement("p");
+  p1.id = "p1";
+
+  let p2 = document.createElement("p");
+  p2.id = "p2";
+
+  let p3 = document.createElement("p");
+  p3.id = "p3"
+
+  let p4 = document.createElement("p");
+  p4.id = "p4"
+
+  let p5 = document.createElement("p");
+  p5.id = "p5"
+
+  let img = document.createElement("img");
+  img.id = "img";
+  img.style.width = "100px";
+
+  p1.textContent = "Personagem: " + objDados.personagem;
+  p2.textContent = "Função: " + objDados.role;
+  p3.textContent = "Escola: " + objDados.school;
+  p4.textContent =  "Data de Nascimento: " + objOutrosDados.dateOfBirth;
+  p5.textContent =  "Ator/Atriz: " + objOutrosDados.actor;
+  img.src = objOutrosDados.img;
+
+  divDetalhes.appendChild(li);
+  li.appendChild(p1);
+  li.appendChild(p2);
+  li.appendChild(p3);
+  li.appendChild(p4);
+  li.appendChild(p5);
+  li.appendChild(img);
 }
 
 async function pesquisarOutrosDados(nome){
@@ -202,6 +245,12 @@ async function pesquisarOutrosDados(nome){
         img : data[i].image
       };
 
+    }else{
+      return {
+        actor : "Undefined",
+        dateOfBirth : "Undefined",
+        img : "Undefined"
+      };
     }
   }
 }
